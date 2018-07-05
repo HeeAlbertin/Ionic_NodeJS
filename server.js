@@ -8,6 +8,7 @@ let app              = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true })); // FOR POSTMAN TESTS
 app.options('*', cors());
 
 var banco = null;
