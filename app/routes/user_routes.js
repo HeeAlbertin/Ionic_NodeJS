@@ -39,18 +39,22 @@ module.exports = function(app, db) {
 		if (req.body.email && req.body.password) {
 			db.collection('user').find({ email: req.body.email }).toArray(
 				function(err, response) {
-				    if (err) 
+					if (err) 
 				    	throw err;
 
-				    bcrypt.compare(req.body.password, response[0].password, 
-				    	function(err, result) {
-					    	if (result) {
-						  		res.send(response[0]);
-							} else {
-								res.status(204).send(false);
+					if (response.length <= 0) {
+						res.status(204).send(false);				    
+					} else {
+					    bcrypt.compare(req.body.password, response[0].password, 
+					    	function(err, result) {
+						    	if (result) {
+							  		res.send(response[0]);
+								} else {
+									res.status(204).send(false);
+								}
 							}
-						}
-					);
+						);
+					}
 			 	}
 			);
 		} else {
